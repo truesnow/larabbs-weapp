@@ -1,0 +1,47 @@
+<template>
+<div class="page">
+  <div class="page__bd">
+    <div class="weui-panel weui-panel_access">
+      <div class="weui-panel__hd" v-if="isLoggedIn">
+       <button type="info" v-on:click="showTpls">点击订阅模板消息</button>
+      </div>
+      <div v-else>
+        <a class="weui-cell weui-cell_access" url="/pages/auth/login">
+          <div class="weui-cell__bd">请先登录</div>
+          <div class="weui-cell_access weui-cell__ft"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+<config>
+  {
+    navigationBarTitleText: '订阅消息',
+  }
+</config>
+<script>
+  import wepy from '@wepy/core'
+  import store from '@/store'
+  import { mapGetters } from '@wepy/x'
+
+  wepy.page({
+    store,
+    computed: {
+      ...mapGetters(['user','isLoggedIn'])
+    },
+    methods: {
+      // 弹出订阅消息
+      async showTpls () {
+        try {
+          wepy.wx.requestSubscribeMessage({
+            tmplIds: ['xBX5a0_V4VFA9To7Y4SRrXTiiLhhn4NKeBW_IkFNjn0'],
+            success (res) {
+              console.log("订阅成功:res" + res)
+            }
+          })
+        } catch (err) {}
+      }
+    }
+  })
+</script>
